@@ -9,23 +9,27 @@ i = 0
 tiempo = 1400
 tiempoacerrar = 2600
 ticketsenuso = []
-validaletra = True
-validonumero = True
+validaletra = False
+validonumero = False
 def validarticket():
   global validaletra
   global validonumero
   e = 0
   for e in range(21):
-    if ticketreslet == letrasvalidas[e]:
+    if ticketres[1] == letrasvalidas[e]:
       validaletra = True
       e = 21
+    elif validaletra == True:
+        pass
     else:
       validaletra = False
   e = 0
   for e in range(4):
-    if ticketresnum == numerosvalidos[e]:
+    if ticketres[0] == numerosvalidos[e]:
       validonumero = True
       e = 4
+    elif validonumero == True:
+        pass
     else:
       validonumero = False
   return validaletra,validonumero
@@ -48,7 +52,7 @@ def personaentrada():
   validarticket()
   if (validaletra == True) and (validonumero == True):
     ticketsenuso.append(ticketres)
-  elif ticketres == ticketsenuso:
+  elif ticketres in ticketsenuso:
     print("Este ticket ya esta en uso.")
   else:
     print("Ticket invalido, intente de vuelta.")
@@ -63,37 +67,47 @@ def echarpersona():
       e = len(ticketsenuso)
     elif e <= len(ticketsenuso):
       e += 1
-    else:
+  e += 1
+  if e > len(ticketsenuso)+1:
       print("Ticket no se encontro en uso.")
-
-
-
+finfin = False
 #aqui empieza -----
-ticketresnum = input("Ingrese el numero de su ticket\n>")
-ticketreslet = input("Ingrese la letra de su ticket\n>")
+ticketres = input("Ingrese su ticket\n>")
 validarticket()
-ticketres = [ticketresnum, ticketreslet]
 ticketsenuso.append(ticketres)
 print(validonumero,validaletra)
-while opcion != "salir":
-  if tiempo != tiempoacerrar:
-    pass
-  else:
-    print("Es tiempo de cerrar el club.")
-    fin = True
-  if fin != True:
-    opcion = input("Quiere aniadir tickets, dejar entrar personas, echar personas,?\n>")
-    if opcion == "echar":
-      echarpersona()
-      tiempo += 30
-    if opcion == "entrar":
-      if len(ticketsenuso) >= 20:
-        print("No pueden entrar mas personas")
+if validonumero == True and validaletra == True:
+    while finfin != True:
+      if tiempo < tiempoacerrar:
+        pass
       else:
-        personaentrada()
-      tiempo += 30
-    while opcion == "aniadir":
-      aniadirticket()
-      print(tickets)
-      opcion = input("Quiere aniadir mas tickets?\n>")
-      tiempo += 30
+        print("Es tiempo de cerrar el club.")
+        fin = True
+        finfin = True
+      if fin != True:
+        opcion = input("Quiere aniadir tickets, dejar entrar personas, echar personas, mostrar cuantas personas hay, mostrar el tiempo, o ya terminar el dia?\n>")
+        if opcion == "echar":
+          echarpersona()
+          tiempo += 30
+        if opcion == "entrar":
+          if len(ticketsenuso) >= 20:
+            print("No pueden entrar mas personas")
+          else:
+            personaentrada()
+          tiempo += 30
+        while opcion == "aniadir":
+          aniadirticket()
+          print(tickets)
+          opcion = input("Quiere aniadir mas tickets?\n>")
+          tiempo += 30
+        if opcion == "mostrar personas":
+            print("Los tickets de las personas presentes son:\n",ticketsenuso)
+            tiempo += 30
+        if opcion == "mostrar tiempo":
+            print("El tiempo es",tiempo)
+            tiempo += 30
+        if opcion == "terminar":
+            print("Decidis cerrar el club temprano...")
+            tiempo = 2600
+else:
+    print("Ticket invalido, intente de vuelta.")
